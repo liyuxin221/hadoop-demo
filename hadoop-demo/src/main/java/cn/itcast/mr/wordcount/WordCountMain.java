@@ -48,7 +48,12 @@ public class WordCountMain extends Configured implements Tool {
     // 第一步:读取文件,解析成key value对, k1 v1
     job.setInputFormatClass(TextInputFormat.class);
 
-    TextInputFormat.addInputPath(job, new Path("hdfs://node-1:8020//wordcount"));
+    // TextInputFormat.addInputPath(job, new Path("hdfs://node-1:8020//wordcount"));
+    // 本地模式运行
+    TextInputFormat.addInputPath(
+        job,
+        new Path(
+            "file:///D:\\001 JavaWeb\\00 itheima\\04 就业班\\day53-hadoop day03\\离线阶段第三天课\\第三天的资料与视频\\3、大数据离线第三天\\wordcount\\input"));
 
     // 第二步:自定义mapper逻辑,接收k1,v1 转换成 k2,v2
     job.setMapperClass(WordCountMapper.class);
@@ -69,8 +74,14 @@ public class WordCountMain extends Configured implements Tool {
 
     // 第八步 输出k3,v3
     job.setOutputFormatClass(TextOutputFormat.class);
-    //设置输出路径,注意:输出路径一定不能存在,否则报错
-    TextOutputFormat.setOutputPath(job, new Path("hdfs://node-1:8020/wordcount_out"));
+    // 设置输出路径,注意:输出路径一定不能存在,否则报错
+    // TextOutputFormat.setOutputPath(job, new Path("hdfs://node-1:8020/wordcount_out"));
+
+    // 使用本地模式运行
+    TextOutputFormat.setOutputPath(
+        job,
+        new Path(
+            "file:///D:\\001 JavaWeb\\00 itheima\\04 就业班\\day53-hadoop day03\\离线阶段第三天课\\第三天的资料与视频\\3、大数据离线第三天\\wordcount\\input\\output_result"));
 
     boolean b = job.waitForCompletion(true);
 
