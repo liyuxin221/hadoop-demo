@@ -1,7 +1,6 @@
 package cn.itcast.mr.demo02;
 
 import lombok.Data;
-import lombok.ToString;
 import org.apache.hadoop.io.WritableComparable;
 
 import java.io.DataInput;
@@ -29,11 +28,11 @@ public class PairTwo implements WritableComparable<PairTwo> {
    */
   @Override
   public int compareTo(PairTwo o) {
-	  int result = this.first.compareTo(o.first);
-    if (result ==0) {
+    int result = this.first.compareTo(o.first);
+    if (result == 0) {
       result = this.second.compareTo(o.second);
     }
-	  return result;
+    return result;
   }
 
   // 序列化
