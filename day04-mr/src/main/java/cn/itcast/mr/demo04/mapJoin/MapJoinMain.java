@@ -37,15 +37,13 @@ public class MapJoinMain extends Configured implements Tool {
 		// 获取job
 		Job job = Job.getInstance(conf, "mapJoinJob");
 
-		// job.setJarByClass(MapJoinMain.class);
+		job.setJarByClass(MapJoinMain.class);
 
 		// 第一步 获取资源
 		job.setInputFormatClass(TextInputFormat.class);
-		//		TextInputFormat.addInputPath(job, new Path(args[1]));
-		TextInputFormat.addInputPath(
-				job,
-				new Path(
-						"file:///D:\\001 JavaWeb\\00 itheima\\04 就业班\\day53-hadoop day03\\离线阶段第三天课\\第四天与第五天的资料\\4、大数据离线第四天\\map端join\\map_join_iput"));
+//		TextInputFormat.addInputPath(job, new Path(args[0]));
+//		TextInputFormat.addInputPath(job, new Path("file:///D:\\001 JavaWeb\\00 itheima\\04 就业班\\day53-hadoop day03\\离线阶段第三天课\\第四天与第五天的资料\\4、大数据离线第四天\\map端join\\map_join_iput"));
+		TextInputFormat.addInputPath(job, new Path("hdfs://node-1:8020/mapJoin_ord/orders.txt"));
 
 		// 第二步 自定义map逻辑
 		job.setMapperClass(MapJoinMapper.class);
@@ -65,11 +63,9 @@ public class MapJoinMain extends Configured implements Tool {
 		// 第八步 输出
 
 		job.setOutputFormatClass(TextOutputFormat.class);
-		//		TextOutputFormat.setOutputPath(job, new Path(args[2]));
-		TextOutputFormat.setOutputPath(
-				job,
-				new Path(
-						"file:///D:\\001 JavaWeb\\00 itheima\\04 就业班\\day53-hadoop day03\\离线阶段第三天课\\第四天与第五天的资料\\4、大数据离线第四天\\map端join\\mapreduce_output_lyx"));
+//		TextOutputFormat.setOutputPath(job, new Path(args[0]));
+//		TextOutputFormat.setOutputPath(job,new Path("file:///D:\\001 JavaWeb\\00 itheima\\04 就业班\\day53-hadoop day03\\离线阶段第三天课\\第四天与第五天的资料\\4、大数据离线第四天\\map端join\\mapreduce_output_lyx"));
+		TextOutputFormat.setOutputPath(job, new Path("hdfs://node-1:8020/mapJoin_result"));
 
 		boolean b = job.waitForCompletion(true);
 
