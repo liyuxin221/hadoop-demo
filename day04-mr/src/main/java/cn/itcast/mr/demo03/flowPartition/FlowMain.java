@@ -21,7 +21,21 @@ import org.apache.hadoop.util.ToolRunner;
 public class FlowMain extends Configured implements Tool {
 
   public static void main(String[] args) throws Exception {
-    int run = ToolRunner.run(new Configuration(), new FlowMain(), args);
+
+    Configuration configuration = new Configuration();
+    configuration.set("mapreduce.output.fileoutputformat.compress", "true");
+    configuration.set("mapreduce.output.fileoutputformat.compress.type", "RECORD");
+
+    configuration.set(
+        "mapreduce.output.fileoutputformat.compress.codec",
+        "org.apache.hadoop.io.compress.SnappyCodec");
+
+    // 配置map阶段输出的数据进行压缩
+    configuration.set("mapreduce.map.output.compress", "true");
+    configuration.set(
+        "mapreduce.map.output.compress.codec", "org.apache.hadoop.io.compress.SnappyCodec");
+
+    int run = ToolRunner.run(configuration, new FlowMain(), args);
 
     System.exit(run);
   }
