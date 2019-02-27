@@ -1,4 +1,4 @@
-package cn.itcast.mr.demo03.flowAdd;
+package cn.itcast.mr.demo03.flowSort;
 
 import lombok.Data;
 import org.apache.hadoop.io.WritableComparable;
