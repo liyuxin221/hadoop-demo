@@ -1,4 +1,4 @@
-package demo01.step01;
+package cn.itcast.mr.demo01.step01;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -28,7 +28,7 @@ public class Step1Reducer extends Reducer<Text, Text, Text, Text> {
 		userStringBuffer.setLength(0);
 
 		for (Text value : values) {
-			userStringBuffer.append(value);
+			userStringBuffer.append(value).append("-");
 		}
 		userText.set(userStringBuffer.toString());
 

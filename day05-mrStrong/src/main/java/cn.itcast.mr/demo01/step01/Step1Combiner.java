@@ -1,4 +1,4 @@
-package demo01.step01;
+package cn.itcast.mr.demo01.step01;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;

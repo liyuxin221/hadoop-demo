@@ -1,4 +1,4 @@
-package demo01.step01;
+package cn.itcast.mr.demo01.step01;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -27,13 +27,13 @@ public class Step1Mapper extends Mapper<LongWritable, Text, Text, Text> {
 			throws IOException, InterruptedException {
 		String[] split = value.toString().split(":");
 		String user = split[0];
-		this.friend.set(friend);
+		this.user.set(user);
 
 		String friends = split[1];
 		String[] split1 = friends.split(",");
 
 		for (String friend : split1) {
-			this.user.set(user);
+			this.friend.set(friend);
 			context.write(this.friend, this.user);
 		}
 	}
