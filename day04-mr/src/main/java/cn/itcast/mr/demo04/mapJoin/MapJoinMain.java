@@ -30,9 +30,10 @@ public class MapJoinMain extends Configured implements Tool {
 	@Override
 	public int run(String[] args) throws Exception {
 		Configuration conf = super.getConf();
+
 		// 将文件放入分布式缓存中
 //		DistributedCache.addCacheFile(new URI(args[0]), conf);
-		DistributedCache.addCacheFile(new URI("hdfs://node-1:8020/mapJoin_pro/pdts.txt"), conf);
+		DistributedCache.addCacheFile(new URI("hdfs://node-1:8020/cache/pdts.txt"), conf);
 
 		// 获取job
 		Job job = Job.getInstance(conf, "mapJoinJob");
