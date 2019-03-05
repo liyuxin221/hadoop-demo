@@ -18,11 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-
 /**
- * 输入数据：pageviews模型结果数据
- * 从pageviews模型结果数据中进一步梳理出visit模型
- * sessionid  start-time   out-time   start-page   out-page   pagecounts  ......
+ * 输入数据：pageviews模型结果数据 从pageviews模型结果数据中进一步梳理出visit模型 sessionid start-time out-time start-page
+ * out-page pagecounts ......
  *
  * @author
  */
@@ -32,7 +30,7 @@ public class ClickStreamVisit {
 		Configuration conf = new Configuration();
 		Job job = Job.getInstance(conf);
 
-		job.setJarByClass(ClickStreamVisit.class);
+		//		job.setJarByClass(ClickStreamVisit.class);
 
 		job.setMapperClass(ClickStreamVisitMapper.class);
 		job.setReducerClass(ClickStreamVisitReducer.class);
@@ -43,15 +41,15 @@ public class ClickStreamVisit {
 		job.setOutputKeyClass(NullWritable.class);
 		job.setOutputValueClass(VisitBean.class);
 
-
-//		FileInputFormat.setInputPaths(job, new Path(args[0]));
-//		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		FileInputFormat.setInputPaths(job, new Path("D:\\weblog\\pageviews"));
-		FileOutputFormat.setOutputPath(job, new Path("D:\\weblog\\visits"));
+		//		FileInputFormat.setInputPaths(job, new Path(args[0]));
+		//		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		FileInputFormat.setInputPaths(
+				job, new Path("D:\\001 JavaWeb\\00 itheima\\04 就业班\\day58-项目 day02\\pageViewsOutput"));
+		FileOutputFormat.setOutputPath(
+				job, new Path("D:\\001 JavaWeb\\00 itheima\\04 就业班\\day58-项目 day02\\visitsOutput"));
 
 		boolean res = job.waitForCompletion(true);
 		System.exit(res ? 0 : 1);
-
 	}
 
 	// 以session作为key，发送数据到reducer
@@ -61,25 +59,30 @@ public class ClickStreamVisit {
 		Text k = new Text();
 
 		@Override
-		protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+		protected void map(LongWritable key, Text value, Context context)
+				throws IOException, InterruptedException {
 
 			String line = value.toString();
 			String[] fields = line.split("\001");
 			int step = Integer.parseInt(fields[5]);
-			//(String session, String remote_addr, String timestr, String request, int step, String staylong, String referal, String useragent, String bytes_send, String status)
-			//299d6b78-9571-4fa9-bcc2-f2567c46df3472.46.128.140-2013-09-18 07:58:50/hadoop-zookeeper-intro/160"https://www.google.com/""Mozilla/5.0"14722200
-			pvBean.set(fields[0], fields[1], fields[2], fields[3], fields[4], step, fields[6], fields[7], fields[8], fields[9]);
+			// (String session, String remote_addr, String timestr, String request, int step, String
+			// staylong, String referal, String useragent, String bytes_send, String status)
+			// 299d6b78-9571-4fa9-bcc2-f2567c46df3472.46.128.140-2013-09-18
+			// 07:58:50/hadoop-zookeeper-intro/160"https://www.google.com/""Mozilla/5.0"14722200
+			pvBean.set(
+					fields[0], fields[1], fields[2], fields[3], fields[4], step, fields[6], fields[7],
+					fields[8], fields[9]);
 			k.set(pvBean.getSession());
 			context.write(k, pvBean);
-
 		}
-
 	}
 
-	static class ClickStreamVisitReducer extends Reducer<Text, PageViewsBean, NullWritable, VisitBean> {
+	static class ClickStreamVisitReducer
+			extends Reducer<Text, PageViewsBean, NullWritable, VisitBean> {
 
 		@Override
-		protected void reduce(Text session, Iterable<PageViewsBean> pvBeans, Context context) throws IOException, InterruptedException {
+		protected void reduce(Text session, Iterable<PageViewsBean> pvBeans, Context context)
+				throws IOException, InterruptedException {
 
 			// 将pvBeans按照step排序
 			ArrayList<PageViewsBean> pvBeansList = new ArrayList<PageViewsBean>();
@@ -93,14 +96,16 @@ public class ClickStreamVisit {
 				}
 			}
 
-			Collections.sort(pvBeansList, new Comparator<PageViewsBean>() {
+			Collections.sort(
+					pvBeansList,
+					new Comparator<PageViewsBean>() {
 
-				@Override
-				public int compare(PageViewsBean o1, PageViewsBean o2) {
+						@Override
+						public int compare(PageViewsBean o1, PageViewsBean o2) {
 
-					return o1.getStep() > o2.getStep() ? 1 : -1;
-				}
-			});
+							return o1.getStep() > o2.getStep() ? 1 : -1;
+						}
+					});
 
 			// 取这次visit的首尾pageview记录，将数据放入VisitBean中
 			VisitBean visitBean = new VisitBean();
@@ -119,9 +124,6 @@ public class ClickStreamVisit {
 			visitBean.setSession(session.toString());
 
 			context.write(NullWritable.get(), visitBean);
-
 		}
-
 	}
-
 }

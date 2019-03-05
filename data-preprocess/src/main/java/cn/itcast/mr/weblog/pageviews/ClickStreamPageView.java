@@ -48,11 +48,13 @@ public class ClickStreamPageView {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
 
-//		FileInputFormat.setInputPaths(job, new Path(args[0]));
-//		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		//		FileInputFormat.setInputPaths(job, new Path(args[0]));
+		//		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
-		FileInputFormat.setInputPaths(job, new Path("D:\\weblog\\output"));
-		FileOutputFormat.setOutputPath(job, new Path("D:\\weblog\\pageviews"));
+		FileInputFormat.setInputPaths(
+				job, new Path("D:\\001 JavaWeb\\00 itheima\\04 就业班\\day58-项目 day02\\preprocessOutput"));
+		FileOutputFormat.setOutputPath(
+				job, new Path("D:\\001 JavaWeb\\00 itheima\\04 就业班\\day58-项目 day02\\pageViewsOutput"));
 
 		job.waitForCompletion(true);
 

@@ -32,7 +32,8 @@ public class WebLogPreProcess extends Configured implements Tool {
 
 		// 第一步 获取资源
 		job.setInputFormatClass(TextInputFormat.class);
-		// TODO: 2019/3/ a
+
+
 		TextInputFormat.addInputPath(
 				job, new Path("D:\\001 JavaWeb\\00 itheima\\04 就业班\\day58-项目 day02\\input"));
 
